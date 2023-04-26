@@ -11,6 +11,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rovio.Challenge.Matchmaking
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rovio.Challenge.Matchmaking.Database", "Rovio.Challenge.Matchmaking.Database\Rovio.Challenge.Matchmaking.Database.csproj", "{BD204A23-483D-4E5A-A8FF-89FDA0DC2D1F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rovio.Challenge.Matchmaking.Engine", "Rovio.Challenge.Matchmaking.Engine\Rovio.Challenge.Matchmaking.Engine.csproj", "{3686B1B0-7948-4EA2-9C28-A8842CE85B3B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rovio.Challenge.Matchmaking.Repositories", "Rovio.Challenge.Matchmaking.Repositories\Rovio.Challenge.Matchmaking.Repositories.csproj", "{7D73E1DE-939F-4FB0-948A-5CDD8A566B01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rovio.Challenge.Matchmaking.UnitTests", "Rovio.Challenge.Matchmaking.UnitTests\Rovio.Challenge.Matchmaking.UnitTests.csproj", "{D93F73CE-590A-499A-96CB-F3461BCA83DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +39,18 @@ Global
 		{BD204A23-483D-4E5A-A8FF-89FDA0DC2D1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD204A23-483D-4E5A-A8FF-89FDA0DC2D1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD204A23-483D-4E5A-A8FF-89FDA0DC2D1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3686B1B0-7948-4EA2-9C28-A8842CE85B3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3686B1B0-7948-4EA2-9C28-A8842CE85B3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3686B1B0-7948-4EA2-9C28-A8842CE85B3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3686B1B0-7948-4EA2-9C28-A8842CE85B3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D73E1DE-939F-4FB0-948A-5CDD8A566B01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D73E1DE-939F-4FB0-948A-5CDD8A566B01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D73E1DE-939F-4FB0-948A-5CDD8A566B01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D73E1DE-939F-4FB0-948A-5CDD8A566B01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D93F73CE-590A-499A-96CB-F3461BCA83DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D93F73CE-590A-499A-96CB-F3461BCA83DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D93F73CE-590A-499A-96CB-F3461BCA83DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D93F73CE-590A-499A-96CB-F3461BCA83DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

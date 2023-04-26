@@ -7,6 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Rovio.Challenge.Matchmaking.Database\Rovio.Challenge.Matchmaking.Database.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Extensions\" />
   </ItemGroup>
   <ItemGroup>

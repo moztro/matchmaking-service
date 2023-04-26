@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
 using Rovio.Challenge.Matchmaking.Domain.Enums;
 
 namespace Rovio.Challenge.Matchmaking.Api.Models

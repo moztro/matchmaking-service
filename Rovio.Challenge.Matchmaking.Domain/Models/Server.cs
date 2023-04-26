@@ -27,7 +27,7 @@ namespace Rovio.Challenge.Matchmaking.Domain.Models
 		/// <summary>
 		/// The sessions being hosted in the server.
 		/// </summary>
-		public IEnumerable<Session> Sessions { get; set; }
+		public IEnumerable<Session> Sessions { get; set; } = new List<Session>();
 	}
 }
 

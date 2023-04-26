@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rovio.Challenge.Matchmaking.Domain\Rovio.Challenge.Matchmaking.Domain.csproj" />
+    <ProjectReference Include="..\Rovio.Challenge.Matchmaking.Repositories\Rovio.Challenge.Matchmaking.Repositories.csproj" />
+    <ProjectReference Include="..\Rovio.Challenge.Matchmaking.Utils\Rovio.Challenge.Matchmaking.Utils.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Models\" />
+    <None Remove="Extensions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
+  </ItemGroup>
+</Project>

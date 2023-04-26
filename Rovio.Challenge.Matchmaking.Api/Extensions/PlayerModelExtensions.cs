@@ -1,8 +1,7 @@
-﻿using System;
-using Rovio.Challenge.Matchmaking.Api.Models;
+﻿using Rovio.Challenge.Matchmaking.Api.Models;
 using Rovio.Challenge.Matchmaking.Domain.Models;
 
-namespace Rovio.Challenge.Matchmaking.Utils.Extensions
+namespace Rovio.Challenge.Matchmaking.Api.Extensions
 {
 	public static class PlayerModelExtensions
 	{

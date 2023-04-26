@@ -20,6 +20,9 @@
     <ProjectReference Include="..\Rovio.Challenge.Matchmaking.Database\Rovio.Challenge.Matchmaking.Database.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\Rovio.Challenge.Matchmaking.Engine\Rovio.Challenge.Matchmaking.Engine.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Remove="Models\" />
