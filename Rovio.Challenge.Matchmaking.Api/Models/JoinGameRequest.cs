@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
+using Rovio.Challenge.Matchmaking.Domain.Enums;
 
 namespace Rovio.Challenge.Matchmaking.Api.Models
 {
@@ -21,6 +22,12 @@ namespace Rovio.Challenge.Matchmaking.Api.Models
 		/// </summary>
 		[Required]
         public int PlayerLatency { get; set; }
+
+		/// <summary>
+		/// The player's region
+		/// </summary>
+		[Required]
+		public Region PlayersRegion { get; set; }
 	}
 }
 

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Extensions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Rovio.Challenge.Matchmaking.Api\Rovio.Challenge.Matchmaking.Api.csproj" />
+    <ProjectReference Include="..\Rovio.Challenge.Matchmaking.Domain\Rovio.Challenge.Matchmaking.Domain.csproj" />
+  </ItemGroup>
+</Project>

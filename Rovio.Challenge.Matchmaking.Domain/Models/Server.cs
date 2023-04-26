@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Rovio.Challenge.Matchmaking.Domain.Enums;
 
 namespace Rovio.Challenge.Matchmaking.Domain.Models
@@ -8,6 +10,10 @@ namespace Rovio.Challenge.Matchmaking.Domain.Models
 	/// </summary>
 	public class Server
 	{
+		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public Guid Id { get; set; }
+
 		/// <summary>
 		/// The IP address for the server.
 		/// </summary>

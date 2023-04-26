@@ -17,11 +17,16 @@
     <ProjectReference Include="..\Rovio.Challenge.Matchmaking.Domain\Rovio.Challenge.Matchmaking.Domain.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\Rovio.Challenge.Matchmaking.Database\Rovio.Challenge.Matchmaking.Database.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Remove="Models\" />
+    <None Remove="Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 </Project>

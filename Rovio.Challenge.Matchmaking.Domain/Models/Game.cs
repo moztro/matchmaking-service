@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace Rovio.Challenge.Matchmaking.Domain.Models
 {
     /// <summary>
@@ -10,6 +12,8 @@ namespace Rovio.Challenge.Matchmaking.Domain.Models
     /// </summary>
     public class Game
 	{
+        [Key]
+        [MaxLength(50)]
 		public string Name { get; set; }
 	}
 }

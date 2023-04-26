@@ -1,4 +1,7 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Rovio.Challenge.Matchmaking.Domain.Models
 {
 	/// <summary>
@@ -9,6 +12,8 @@ namespace Rovio.Challenge.Matchmaking.Domain.Models
 		/// <summary>
 		/// Session identificator.
 		/// </summary>
+		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public Guid Id { get; set; }
 
 		/// <summary>
