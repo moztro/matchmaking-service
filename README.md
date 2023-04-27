@@ -11,7 +11,6 @@ Matchmaking solves a particular kind of problem for online games. Let's think in
 ## design considerations
 ### features
 - Enqueue a player. Starts with players requesting to join a game session.
-- Dequeue a player. When player decided to stop searching for a game to join.
 - Assign player to session. Returns a game session with the player added to it.
 - Join an ongoing session. Players can join a session after it has started.
 
@@ -20,6 +19,13 @@ Matchmaking solves a particular kind of problem for online games. Let's think in
 - Allow/Deny. To block or allow certain players to join a session, its out of initial scope.
 - Auto-cancellation. Players cannot cancel themselves a join request after it has started.
 
+## diagram
+- A player requests to join a game thru REST API.
+- The player is added to the queue.
+  - Re-think: Should the lobby (queue for players to wait for a game) be game agnostic or such lobby should be per game?
+- Matchmaker pops players from the queue and look for a game session match.
+- Matchmaker finds a matching session for the player and return such session.
+![image](https://user-images.githubusercontent.com/2914519/234997493-254f8b6e-8c34-4df1-b21a-c64c97e53444.png)
 
 
   
