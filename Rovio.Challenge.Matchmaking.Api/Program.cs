@@ -5,15 +5,14 @@ using Rovio.Challenge.Matchmaking.Engine.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
-var services = builder.Services;
 
 // Add services to the container.
-services.AddSqlliteDatabase(configuration);
-services.AddMatchmaking(configuration, builder.Environment.EnvironmentName);
-services.AddControllers();
+builder.Services.AddSqlliteDatabase(configuration);
+builder.Services.AddMatchmaking(configuration, builder.Environment.EnvironmentName);
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-services.AddEndpointsApiExplorer();
-services.AddSwaggerGen();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using Rovio.Challenge.Matchmaking.Domain.Models;
 
-namespace Rovio.Challenge.Matchmaking.Engine.Models
+namespace Rovio.Challenge.Matchmaking.Queues.Models
 {
 	/// <summary>
 	/// Represents a player that requested to join a game, and get queued to wait for a session.

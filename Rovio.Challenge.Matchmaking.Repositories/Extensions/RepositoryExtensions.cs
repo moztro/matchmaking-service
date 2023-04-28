@@ -10,8 +10,8 @@ namespace Rovio.Challenge.Matchmaking.Repositories.Extensions
         {
             services.AddTransient<BaseRepository<Game>, GameRepository>();
             services.AddTransient<BaseRepository<Player>, PlayerRepository>();
-            services.AddTransient<BaseRepository<Session>, SessionRepository>();
             services.AddTransient<BaseRepository<Server>, ServerRepository>();
+            services.AddTransient<BaseRepository<Session>, SessionRepository>();
 
             return services;
 		}

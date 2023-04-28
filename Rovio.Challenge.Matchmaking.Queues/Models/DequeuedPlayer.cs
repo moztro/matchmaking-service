@@ -1,7 +1,7 @@
 ﻿using System;
 using Rovio.Challenge.Matchmaking.Domain.Models;
 
-namespace Rovio.Challenge.Matchmaking.Engine.Models
+namespace Rovio.Challenge.Matchmaking.Queues.Models
 {
     /// <summary>
     /// If a player its being dequeued should be ready for a game

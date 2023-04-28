@@ -7,16 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Settings\" />
-    <None Remove="Models\" />
-    <None Remove="Enums\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Settings\" />
-    <Folder Include="Models\" />
-    <Folder Include="Enums\" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\Rovio.Challenge.Matchmaking.Domain\Rovio.Challenge.Matchmaking.Domain.csproj" />
+    <ProjectReference Include="..\Rovio.Challenge.Matchmaking.Repositories\Rovio.Challenge.Matchmaking.Repositories.csproj" />
     <ProjectReference Include="..\Rovio.Challenge.Matchmaking.Utils\Rovio.Challenge.Matchmaking.Utils.csproj" />
   </ItemGroup>
 </Project>
