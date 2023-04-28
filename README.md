@@ -21,11 +21,11 @@ Matchmaking solves a particular kind of problem for online games. Let's think in
 
 ## diagram
 - A player requests to join a game thru REST API.
-- The player is added to the queue.
-  - Re-think: Should the lobby (queue for players to wait for a game) be game agnostic or such lobby should be per game?
+- The player is added to the concrete game queue (since doesn't make sense players wait on the line before other players that are not playing the same game).
 - Matchmaker pops players from the queue and look for a game session match.
 - Matchmaker finds a matching session for the player and return such session.
-![image](https://user-images.githubusercontent.com/2914519/234997493-254f8b6e-8c34-4df1-b21a-c64c97e53444.png)
+<img width="1408" alt="image" src="https://user-images.githubusercontent.com/2914519/235269323-e5afe504-0aa8-4c6a-af3b-70e6f2cc5b47.png">
+
 
 
   
