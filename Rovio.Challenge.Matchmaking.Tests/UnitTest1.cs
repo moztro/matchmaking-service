@@ -1,7 +1,7 @@
 ﻿using Rovio.Challenge.Matchmaking.Api.Controllers;
-using Rovio.Challenge.Matchmaking.UnitTests.Infrastructure;
+using Rovio.Challenge.Matchmaking.Tests.Infrastructure;
 
-namespace Rovio.Challenge.Matchmaking.UnitTests;
+namespace Rovio.Challenge.Matchmaking.Tests;
 
 public class UnitTest1
 {

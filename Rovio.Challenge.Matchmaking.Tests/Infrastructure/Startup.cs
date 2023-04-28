@@ -8,7 +8,7 @@ using Rovio.Challenge.Matchmaking.Database.DbContexts;
 using Rovio.Challenge.Matchmaking.Engine.Extensions;
 using Microsoft.Extensions.Configuration;
 
-namespace Rovio.Challenge.Matchmaking.UnitTests.Infrastructure;
+namespace Rovio.Challenge.Matchmaking.Tests.Infrastructure;
 
 internal class Startup<T> : WebApplicationFactory<T> where T : class
 {
