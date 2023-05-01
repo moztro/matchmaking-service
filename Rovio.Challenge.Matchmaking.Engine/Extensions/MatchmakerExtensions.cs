@@ -40,7 +40,7 @@ namespace Rovio.Challenge.Matchmaking.Engine.Extensions
 				{
 					case GameTitles.AngryBirds: return provider.GetRequiredService<IAngryBirdsMatchmaker>();
 					case GameTitles.BadPiggies: return provider.GetRequiredService<IBadPiggiesMatchmaker>();
-					default: throw new NotImplementedException($"No matchmaking implementation for ${gameId}");
+					default: throw new NotImplementedException($"No matchmaking implementation for {gameId}");
 				};
 			});
 

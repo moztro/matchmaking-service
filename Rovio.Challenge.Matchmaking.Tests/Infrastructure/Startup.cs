@@ -24,7 +24,7 @@ internal class Startup<T> : WebApplicationFactory<T> where T : class
             services.RemoveAll(typeof(DbContextOptions<SqlLiteContext>));
             services.AddDbContext<SqlLiteContext>(options => { options.UseSqlite(_connection); });
 
-            services.AddMatchmaking((ConfigurationManager)builder.Configuration, "development");
+            services.AddMatchmaking((ConfigurationManager)builder.Configuration, "test");
         });
 
         return base.CreateHost(builder);

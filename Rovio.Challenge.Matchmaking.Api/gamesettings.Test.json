@@ -1,0 +1,7 @@
+﻿{
+  "GameSessionSettings": {
+    "MinPlayers": 1,
+    "MaxPlayers": 100
+  }
+}
+
