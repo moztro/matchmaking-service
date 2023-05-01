@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rovio.Challenge.Matchmaking.Database.DbContexts;
 
@@ -10,9 +11,11 @@ using Rovio.Challenge.Matchmaking.Database.DbContexts;
 namespace Rovio.Challenge.Matchmaking.Database.Migrations.Sqllite
 {
     [DbContext(typeof(SqlLiteContext))]
-    partial class SqlLiteContextModelSnapshot : ModelSnapshot
+    [Migration("20230501173409_UpdateModel")]
+    partial class UpdateModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
