@@ -11,7 +11,7 @@ public class LatencyMatchmakingRule : ILatencyMatchmakingRule, IMatchmakingRule<
     private const double _initialLatencyDistance = 10;
     public double AllowedDistance { get; set; } = _initialLatencyDistance;
 
-    public bool Match(double value, double target)
+    public virtual bool Match(double value, double target)
     {
         return (Math.Abs(target - value) <= AllowedDistance);
     }

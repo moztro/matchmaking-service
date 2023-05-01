@@ -39,7 +39,7 @@ public class SessionManager : ISessionManager
         return server;
     }
 
-    public List<Session> GetAvailableSessionsInPlayersRegion(Player player, Game game)
+    public virtual List<Session> GetAvailableSessionsInPlayersRegion(Player player, Game game)
     {
         var server = GetGameServer(player);
 
@@ -59,7 +59,7 @@ public class SessionManager : ISessionManager
         return sessions;
     }
 
-    public bool IsSessionReady(Session session)
+    public virtual bool IsSessionReady(Session session)
     {
         return session.Players.Any() &&
             session.Players.Count() >= _gameSettings.MinPlayers &&

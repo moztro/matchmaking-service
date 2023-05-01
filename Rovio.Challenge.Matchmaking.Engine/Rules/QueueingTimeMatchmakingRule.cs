@@ -11,7 +11,7 @@ public class QueueingTimeMatchmakingRule : IQueueingTimeMatchmakingRule, IMatchm
     private static TimeSpan _initialWaitingTimeDistance = TimeSpan.FromSeconds(10);
     public TimeSpan AllowedDistance { get; set; } = _initialWaitingTimeDistance;
 
-    public bool Match(TimeSpan value, TimeSpan target)
+    public virtual bool Match(TimeSpan value, TimeSpan target)
     {
         var diff = target - value;
 
