@@ -1,6 +1,11 @@
 ﻿using Rovio.Challenge.Matchmaking.Queues;
 using Rovio.Challenge.Matchmaking.Managers;
 using Rovio.Challenge.Matchmaking.Domain.Games;
+using Rovio.Challenge.Matchmaking.Engine.Rules;
+using Rovio.Challenge.Matchmaking.Engine.Utils;
+using Rovio.Challenge.Matchmaking.Domain.Models;
+using Rovio.Challenge.Matchmaking.Queues.Models;
+using Rovio.Challenge.Matchmaking.Domain.Exceptions;
 
 namespace Rovio.Challenge.Matchmaking.Engine;
 
@@ -14,15 +19,30 @@ public class AngryBirdsMatchmaker : Matchmaker<AngryBirds>, IAngryBirdsMatchmake
 {
     public AngryBirdsMatchmaker(
         BaseQueue<AngryBirds> queue,
-        ISessionManager sessionManager)
-        :base(queue, sessionManager)
+        ISessionManager sessionManager,
+        LatencyMatchmakingRule latencyRule,
+        QueueingTimeMatchmakingRule queueingTimeRule,
+        IRetrier retrier)
+        :base(queue, sessionManager, latencyRule, queueingTimeRule, retrier)
     { }
 
-    public Task StartMatchmakingProcess()
+    public Task AddPlayerToLobby(Player player)
     {
-        base.BaseStartMatchmakingProcess();
-
+        var queue = ((BaseQueue<AngryBirds>)base.Queue);
+        queue.QueuePlayer(player, new AngryBirds());
         return Task.CompletedTask;
+    }
+    
+    public Session StartMatchmakingProcess()
+    {
+        var sessions = base.GetSessionsBasedOnRules();
+        if (!sessions.Any())
+            throw new SessionNotFoundException();
+
+        // returns the first session available, if this concrete matchmaker
+        // needs to it can apply more rules on top if this result to better
+        // suit the game specific matchmaking rules.
+        return sessions.Select(s => s.Session).FirstOrDefault();
     }
 }
 

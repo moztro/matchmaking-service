@@ -7,6 +7,7 @@ using Rovio.Challenge.Matchmaking.Domain.Models;
 using Rovio.Challenge.Matchmaking.Domain.Games;
 using Rovio.Challenge.Matchmaking.Utils.Constants;
 using static Rovio.Challenge.Matchmaking.Engine.Extensions.MatchmakerExtensions;
+using Rovio.Challenge.Matchmaking.Domain.Exceptions;
 
 namespace Rovio.Challenge.Matchmaking.Api.Controllers;
 
@@ -36,9 +37,18 @@ public class GameController : ControllerBase
         var matchmaking = _matchmakingResolver(gameId);
         var player = joinRequest.ToPlayer();
 
-        matchmaking.StartMatchmakingProcess();
+        matchmaking.AddPlayerToLobby(player);
 
-        return Ok(new JoinGameResponse($"{player.Username} requested to join a session"));
+        try
+        {
+            var session = matchmaking.StartMatchmakingProcess();
+
+            return Ok(new JoinGameResponse($"{player.Username} have join sessions {session.Id}"));
+        }
+        catch(RovioException rovioEx)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, rovioEx.Message);
+        }
     }
 
     [HttpGet("{gameId}/player/{username}/status")]

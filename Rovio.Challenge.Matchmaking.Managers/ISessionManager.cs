@@ -9,5 +9,12 @@ public interface ISessionManager
     /// </summary>
     /// <returns></returns>
     List<Session> GetAvailableSessionsInPlayersRegion(Player player, Game game);
+
+    /// <summary>
+    /// Determines if a session is ready for a player to join based on game settings.
+    /// </summary>
+    /// <param name="session"></param>
+    /// <returns></returns>
+    bool IsSessionReady(Session session);
 }
 

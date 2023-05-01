@@ -1,4 +1,6 @@
-﻿using Rovio.Challenge.Matchmaking.Domain.Models;
+﻿using Microsoft.Extensions.Options;
+using Rovio.Challenge.Matchmaking.Domain.Models;
+using Rovio.Challenge.Matchmaking.Domain.Settings;
 using Rovio.Challenge.Matchmaking.Repositories;
 using Rovio.Challenge.Matchmaking.Utils;
 
@@ -8,14 +10,17 @@ public class SessionManager : ISessionManager
 {
     private readonly BaseRepository<Server> _serverRepository;
     private readonly BaseRepository<Session> _sessionRepository;
+    private readonly GameSessionSettings _gameSettings;
 
     public SessionManager(
         BaseRepository<Server> serverRepository,
-        BaseRepository<Session> sessionRepository
+        BaseRepository<Session> sessionRepository,
+        IOptions<GameSessionSettings> gameSettings
     )
     {
         _serverRepository = serverRepository;
         _sessionRepository = sessionRepository;
+        _gameSettings = gameSettings.Value;
     }
 
     private Server GetGameServer(Player player)
@@ -45,12 +50,20 @@ public class SessionManager : ISessionManager
             var newSession = new Session()
             {
                 Game = game,
-                Server = server
+                Server = server,
+                Players = new List<Player> { player }
             };
             _sessionRepository.Insert(newSession);
             sessions.Add(newSession);
         }
         return sessions;
+    }
+
+    public bool IsSessionReady(Session session)
+    {
+        return session.Players.Any() &&
+            session.Players.Count() >= _gameSettings.MinPlayers &&
+            session.Players.Count() <= _gameSettings.MaxPlayers;
     }
 }
 

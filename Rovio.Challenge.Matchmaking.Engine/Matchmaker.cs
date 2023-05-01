@@ -1,16 +1,25 @@
 ﻿using Rovio.Challenge.Matchmaking.Domain.Models;
 using Rovio.Challenge.Matchmaking.Queues;
 using Rovio.Challenge.Matchmaking.Managers;
+using Rovio.Challenge.Matchmaking.Queues.Models;
+using Rovio.Challenge.Matchmaking.Engine.Rules;
+using Rovio.Challenge.Matchmaking.Engine.Utils;
 
 namespace Rovio.Challenge.Matchmaking.Engine;
 
 public interface IMatchmaker
 {
     /// <summary>
+    /// Adds a player to queueing for a game.
+    /// </summary>
+    /// <param name="player"></param>
+    /// <returns></returns>
+    Task AddPlayerToLobby(Player player);
+    /// <summary>
     /// Start the process for finding matched sessions for players in queue.
     /// </summary>
     /// <returns></returns>
-    Task StartMatchmakingProcess();
+    Session StartMatchmakingProcess();
 }
 
 /// <summary>
@@ -19,29 +28,82 @@ public interface IMatchmaker
 /// <typeparam name="T"></typeparam>
 public class Matchmaker<T> where T : Game
 {
-    private readonly BaseQueue<T> _queue;
-    private readonly ISessionManager _sessionManager;
+    public readonly BaseQueue<T> Queue;
+    private readonly ISessionManager _sessionsManager;
+    private readonly LatencyMatchmakingRule _latencyRule;
+    private readonly QueueingTimeMatchmakingRule _queueingTimeRule;
+    private readonly IRetrier _retrier;
 
     public Matchmaker(
         BaseQueue<T> queue,
-        ISessionManager sessionManager)
+        ISessionManager sessionsManager,
+        LatencyMatchmakingRule latencyRule,
+        QueueingTimeMatchmakingRule queueingTimeRule,
+        IRetrier retrier)
     {
-        _queue = queue;
-        _sessionManager = sessionManager;
+        Queue = queue;
+        _sessionsManager = sessionsManager;
+        _latencyRule = latencyRule;
+        _queueingTimeRule = queueingTimeRule;
+        _retrier = retrier;
     }
     
-    public Task BaseStartMatchmakingProcess()
+    public (DequeuedPlayer, List<Session>) DequePlayerAndFindSessionsAvailable()
     {
-        var dequeuedPlayer = _queue.DequeuePlayer();
+        var sessions = new List<Session>();
+        var dequeuedPlayer = Queue.DequeuePlayer();
         if (dequeuedPlayer == null)
-            return Task.CompletedTask;
-        var sessions = _sessionManager.GetAvailableSessionsInPlayersRegion(dequeuedPlayer.Player, dequeuedPlayer.Game);
+            return (null, sessions);
+        sessions = _sessionsManager.GetAvailableSessionsInPlayersRegion(dequeuedPlayer.Player, dequeuedPlayer.Game);
 
-        // add player to the session
-        // session.Players.Add(dequeuedPlayer.Player);
-        // _sessionRepository.Update(session);
+        return (dequeuedPlayer, sessions);
+    }
 
-        return Task.CompletedTask;
+    public List<ReadySession> GetSessionsBasedOnRules()
+    {
+        var (player, sessions) = DequePlayerAndFindSessionsAvailable();
+        var avgLatency = sessions.Any() ? sessions.Average(s => s.Players.Any() ? s.Players.Average(p => p.Latency) : 0) : 0;
+
+        var matchedSessions = new List<ReadySession>();
+        foreach(var session in sessions)
+        {
+            // TO-DO: with each try should increment target property, in this case if latency
+            // does not have a match, it should be able to increase the value to allow matching
+            // to be flexible with each retry.
+            var matches =_retrier.Run<bool>(
+                () => _latencyRule.Match(player.Player.Latency, avgLatency),
+                TimeSpan.FromMilliseconds(1000)
+            );
+
+            if (matches && _sessionsManager.IsSessionReady(session))
+            {
+                var readySession = new ReadySession();
+                readySession.Session = session;
+                readySession.Players.Add(player.ToDequeuedPlayer());
+                matchedSessions.Add(readySession);
+            }
+        }
+
+        var avgQueueingTimeInSecs = matchedSessions.Any() ?
+            matchedSessions.Average(s => s.Players.Any() ? s.Players.Average(p => p.QueueingTime.TotalSeconds) : 0) : 0;
+        foreach(var session in matchedSessions.ToList())
+        {
+            // TO-DO: with each try should increment target property, in this case if queueing time
+            // does not have a match, it should be able to increase the value to allow matching
+            // to be flexible with each retry.
+            var matches = _retrier.Run<bool>(
+                () => _queueingTimeRule.Match(player.QueueingTime, TimeSpan.FromSeconds(avgQueueingTimeInSecs)),
+                TimeSpan.FromMilliseconds(1000)
+            );
+
+            // if session does not match or happen to become unready, remove it
+            if (!(matches && _sessionsManager.IsSessionReady(session.Session)))
+            {
+                matchedSessions.Remove(session);
+            }
+        }
+
+        return matchedSessions;
     }
 }
 
