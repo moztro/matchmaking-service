@@ -63,7 +63,7 @@ public class MatchmakingUnitTests
         {
             new Session(){ Id = Guid.NewGuid(), Players = new List<Player>{ playerA } }
         };
-        _queue.Setup(x => x.DequeuePlayer()).Returns(new DequeuedPlayer(playerA, game, DateTimeOffset.UtcNow));
+        _queue.Setup(x => x.PeekPlayer()).Returns(new DequeuedPlayer(playerA, game, DateTimeOffset.UtcNow));
         _sessionManager.Setup(x => x.GetAvailableSessionsInPlayersRegion(It.IsAny<Player>(), It.IsAny<Game>())).Returns(sessions);
 
         _matchmaker.Queue.QueuePlayer(playerA, game);
@@ -84,7 +84,7 @@ public class MatchmakingUnitTests
         {
             new Session(){ Id = Guid.NewGuid(), Players = _players }
         };
-        _queue.Setup(x => x.DequeuePlayer()).Returns(new DequeuedPlayer(playerA, game, DateTimeOffset.UtcNow));
+        _queue.Setup(x => x.PeekPlayer()).Returns(new DequeuedPlayer(playerA, game, DateTimeOffset.UtcNow));
         _sessionManager.Setup(x => x.GetAvailableSessionsInPlayersRegion(It.IsAny<Player>(), It.IsAny<Game>())).Returns(sessions);
         _retrier.Setup(x => x.Run<bool>(It.IsAny<Func<bool>>(), It.IsAny<TimeSpan>(), It.IsAny<int>())).Returns(true);
         _latencyRule.Setup(x => x.Match(It.IsAny<double>(), It.IsAny<double>())).Returns(true);

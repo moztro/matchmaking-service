@@ -29,6 +29,23 @@ public class QueueUntTests
     }
 
     [Fact]
+    public void WhenEnquePlayerA_ThenPeekPlayerA_ShouldPlayerRemainInQueue()
+    {
+        var playerA = new Player()
+        {
+            Username = "playerA"
+        };
+
+        _angryBirdsQueue.QueuePlayer(playerA, new AngryBirds());
+
+        var dequeuedPlayer = _angryBirdsQueue.PeekPlayer();
+
+        Assert.Equal(playerA.Username, dequeuedPlayer.Player.Username);
+        // player should remain in the queue
+        Assert.NotNull(_angryBirdsQueue.GetPlayerFromQueue(playerA.Username));
+    }
+
+    [Fact]
     public void WhenDequeueEmptyQueue_ReturnsNull()
     {
         Assert.Null(_angryBirdsQueue.DequeuePlayer());

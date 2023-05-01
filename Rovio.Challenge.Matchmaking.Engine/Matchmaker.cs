@@ -20,6 +20,12 @@ public interface IMatchmaker
     /// </summary>
     /// <returns></returns>
     Session StartMatchmakingProcess();
+    /// <summary>
+    /// Gets a player from the game queue.
+    /// </summary>
+    /// <param name="username"></param>
+    /// <returns></returns>
+    Player GetPlayerFromQueue(string username);
 }
 
 /// <summary>
@@ -51,7 +57,7 @@ public class Matchmaker<T> where T : Game
     public (DequeuedPlayer, List<Session>) DequePlayerAndFindSessionsAvailable()
     {
         var sessions = new List<Session>();
-        var dequeuedPlayer = Queue.DequeuePlayer();
+        var dequeuedPlayer = Queue.PeekPlayer();
         if (dequeuedPlayer == null)
             return (null, sessions);
         sessions = _sessionsManager.GetAvailableSessionsInPlayersRegion(dequeuedPlayer.Player, dequeuedPlayer.Game);
@@ -102,6 +108,10 @@ public class Matchmaker<T> where T : Game
                 matchedSessions.Remove(session);
             }
         }
+
+        // If matching was success, then dequeue the player.
+        if(matchedSessions.Any())
+            Queue.DequeuePlayer();
 
         return matchedSessions;
     }

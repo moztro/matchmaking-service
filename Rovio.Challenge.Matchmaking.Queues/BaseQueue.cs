@@ -33,6 +33,13 @@ public class BaseQueue<T> where T : Game
         return null;
     }
 
+    public virtual DequeuedPlayer PeekPlayer()
+    {
+        if (Queue.TryPeek(out QueuedPlayer player))
+            return player.ToDequeuedPlayer();
+        return null;
+    }
+
     /// <summary>
     /// Get a player if it does exists in the queue, null if does not.
     /// </summary>

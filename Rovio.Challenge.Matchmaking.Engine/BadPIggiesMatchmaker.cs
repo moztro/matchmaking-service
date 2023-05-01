@@ -31,6 +31,11 @@ public class BadPiggiesMatchmaker : Matchmaker<BadPiggies>, IBadPiggiesMatchmake
         queue.QueuePlayer(player, new BadPiggies());
         return Task.CompletedTask;
     }
+
+    public Player GetPlayerFromQueue(string username)
+    {
+        return ((BaseQueue<BadPiggies>)base.Queue).GetPlayerFromQueue(username);
+    }
     
     public Session StartMatchmakingProcess()
     {

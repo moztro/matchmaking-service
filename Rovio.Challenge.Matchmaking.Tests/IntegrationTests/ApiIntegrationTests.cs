@@ -61,4 +61,16 @@ public class ApiIntegrationTests
         var responseMsg = await ((HttpResponseMessage)response).Content.ReadAsStringAsync();
         Assert.True(responseMsg.Contains(expectedMsg));
     }
+
+    [Fact]
+    public async Task WhenCheckPlayerStatusAndNotInQueue_ReturnsNotFound()
+    {
+        var gameId = "angry-birds";
+        var player = "playerA";
+        await WhenJoinAGame_WithCorrectRequest_ReturnsOk(gameId);
+
+        var response = await _client.GetAsync($"api/v1/game/{gameId}/player/{player}/status");
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
 }

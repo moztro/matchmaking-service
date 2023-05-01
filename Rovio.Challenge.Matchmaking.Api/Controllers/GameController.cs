@@ -56,7 +56,13 @@ public class GameController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public ActionResult Status(string gameId, string username)
     {
-        return Ok($"{username} is waiting at the lobby");
+        var matchmaking = _matchmakingResolver(gameId);
+        var player = matchmaking.GetPlayerFromQueue(username);
+
+        if (player != null)
+            return Ok($"{player.Username} is waiting at the lobby.");
+        else
+            return NotFound($"Player is not at the queue, it might joined a game or canceled request.");
     }
 }
 

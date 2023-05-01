@@ -32,7 +32,12 @@ public class AngryBirdsMatchmaker : Matchmaker<AngryBirds>, IAngryBirdsMatchmake
         queue.QueuePlayer(player, new AngryBirds());
         return Task.CompletedTask;
     }
-    
+
+    public Player GetPlayerFromQueue(string username)
+    {
+        return ((BaseQueue<AngryBirds>)base.Queue).GetPlayerFromQueue(username);
+    }
+
     public Session StartMatchmakingProcess()
     {
         var sessions = base.GetSessionsBasedOnRules();
