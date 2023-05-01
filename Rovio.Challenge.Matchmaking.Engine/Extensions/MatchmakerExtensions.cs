@@ -6,6 +6,8 @@ using Rovio.Challenge.Matchmaking.Domain.Games;
 using Rovio.Challenge.Matchmaking.Managers.Extensions;
 using Rovio.Challenge.Matchmaking.Utils.Constants;
 using Rovio.Challenge.Matchmaking.Domain.Models;
+using Rovio.Challenge.Matchmaking.Engine.Rules;
+using Rovio.Challenge.Matchmaking.Engine.Utils;
 
 namespace Rovio.Challenge.Matchmaking.Engine.Extensions
 {
@@ -24,6 +26,9 @@ namespace Rovio.Challenge.Matchmaking.Engine.Extensions
 			services.AddManagers();
 			services.AddScoped<BaseQueue<AngryBirds>, AngryBirdsQueue>();
 			services.AddScoped<BaseQueue<BadPiggies>, BadPiggiesQueue>();
+			services.AddScoped<IRetrier, Retrier>();
+			services.AddScoped<LatencyMatchmakingRule>();
+			services.AddScoped<QueueingTimeMatchmakingRule>();
 			services.AddScoped<IAngryBirdsMatchmaker, AngryBirdsMatchmaker>();
 			services.AddScoped<IBadPiggiesMatchmaker, BadPiggiesMatchmaker>();
 
