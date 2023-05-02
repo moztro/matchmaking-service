@@ -60,5 +60,10 @@ As a .NET project, it uses appsettings.json files and environment variables in o
     4. `IMatchmakingRule` has a property `AllowedDistance` that can be tweaked in order to increase/decrease the valid range for which the values are considered to be "close" enough. Initial value is 10 but child classes can implement its own custom distance.
 4. Database logic can be swaped to the desired db engine.
     1. Data logic is implemented at `Rovio.Challenge.Matchmaking.Database` and its isolated from the Repository logic, so it can be easily swaped to a different DB engine without heavily affecting the rest of the application logic (rules, queues, matchmaking, api, etc).
-5. To have a tolerant Retrier class. 
+
+## how to improve?
+1. To have a tolerant Retrier class. 
     1. Retrier class should be updated to have incremental values for each try. This is particularly useful when validating a rule, for instance, let's say a player with latency=50 wants to join sessions with other players with latency=70, the distance in this case is 20 (70-50) so it won't be a match, but if we increase the distance for the next try to be >=20, then it will find a match and player will join that session.  
+2. Servers to be game specific.
+    1. Right now servers are modeled to host multiple game sessions and to be region specific.
+    2. Changing servers to also consider to be game specific can help on games to have dedicated servers. So, if a server goes down for an specific games, other games won't be affected.
