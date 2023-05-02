@@ -53,10 +53,12 @@ As a .NET project, it uses appsettings.json files and environment variables in o
 2. Matchmaking are NOT game specific (but can extend to have games implement its own matchmaking logic).
     1. Matchmaking rules for latency and queueing time are not game specific due to they're not naturally tied to games.
     2. Matchmaking rules can be extended to be game specific by creating concrete rules inherit from `Rovio.Challenge.Matchmaking.Engine.Matchmaker<Game>` and implementing `Rovio.Challenge.Matchmaking.Engine.IMatchmaker.StartMatchmakingProcess()` and add its own rules services/logic.
-3. Matchmaking rules knows nothing regarding Games (but can be extended to be).
+3. Matchmaking rules knows nothing regarding games.
     1. Rules are not game specific, but rather specific to the actual value they're intended to validate.
     2. For creating new rules, you can do it by implementing `Rovio.Challenge.Matchmaking.Engine.Rules.IMatchmakingRule<struct>` to have it validated to the specific parametrized values. 
-    3. `IMatchmakingRule<struct>` has struct constraint since the values to validate where merely non-reference ones (numbers, seconds, etc.).
-    4. `IMatchmakingRule` has a property `AllowedDistance` that can be tweaked in order to increase/decrease the valid range for the values to be validated. Initial value is 10 but child classes can implement its own custom distance.
+    3. `IMatchmakingRule<struct>` has struct constraint since the values to validate are merely finite (numbers, seconds, ranks, etc.) and can be measured.
+    4. `IMatchmakingRule` has a property `AllowedDistance` that can be tweaked in order to increase/decrease the valid range for which the values are considered to be "close" enough. Initial value is 10 but child classes can implement its own custom distance.
 4. Database logic can be swaped to the desired db engine.
     1. Data logic is implemented at `Rovio.Challenge.Matchmaking.Database` and its isolated from the Repository logic, so it can be easily swaped to a different DB engine without heavily affecting the rest of the application logic (rules, queues, matchmaking, api, etc).
+5. To have a tolerant Retrier class. 
+    1. Retrier class should be updated to have incremental values for each try. This is particularly useful when validating a rule, for instance, let's say a player with latency=50 wants to join sessions with other players with latency=70, the distance in this case is 20 (70-50) so it won't be a match, but if we increase the distance for the next try to be >=20, then it will find a match and player will join that session.  
