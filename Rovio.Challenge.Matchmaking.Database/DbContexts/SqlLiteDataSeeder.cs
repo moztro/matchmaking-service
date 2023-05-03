@@ -1,5 +1,6 @@
 ﻿using System;
 using Rovio.Challenge.Matchmaking.Domain.Models;
+using Rovio.Challenge.Matchmaking.Utils.Constants;
 
 namespace Rovio.Challenge.Matchmaking.Database.DbContexts
 {
@@ -7,9 +8,8 @@ namespace Rovio.Challenge.Matchmaking.Database.DbContexts
 	{
 		private static List<Game> seedGames = new List<Game>
 		{
-			new Game { Name = "angry birds" },
-			new Game { Name = "bad piggies" },
-			new Game { Name = "battle bay" }
+			new Game { Name = GameTitles.AngryBirds},
+			new Game { Name = GameTitles.BadPiggies}
 		};
 
 		/// <summary>
