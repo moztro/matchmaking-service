@@ -18,6 +18,7 @@ Matchmaking solves a particular kind of problem for online games. Let's think in
 - Skill match. It won't consider player's skill in order to match.
 - Allow/Deny. To block or allow certain players to join a session, its out of initial scope.
 - Auto-cancellation. Players cannot cancel themselves a join request after it has started.
+- No authentication/authorization as per small scope.
 
 ## diagram
 - A player requests to join a game thru REST API.
