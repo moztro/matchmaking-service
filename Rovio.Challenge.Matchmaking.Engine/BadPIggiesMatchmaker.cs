@@ -40,8 +40,6 @@ public class BadPiggiesMatchmaker : Matchmaker<BadPiggies>, IBadPiggiesMatchmake
     public Session StartMatchmakingProcess()
     {
         var sessions = base.GetSessionsBasedOnRules();
-        if (!sessions.Any())
-            throw new SessionNotFoundException();
 
         // returns the first session available, if this concrete matchmaker
         // needs to it can apply more rules on top if this result to better

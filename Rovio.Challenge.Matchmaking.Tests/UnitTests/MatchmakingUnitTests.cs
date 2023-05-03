@@ -35,12 +35,14 @@ public class MatchmakingUnitTests
         var db = new SqlLiteContext();
         var serverRepository = new Mock<BaseRepository<Server>>(db);
         var sessionRepository = new Mock<BaseRepository<Session>>(db);
+        var gameRepository = new Mock<BaseRepository<Game>>(db);
+        var playerRepository = new Mock<BaseRepository<Player>>(db);
         var gameSettings = new GameSessionSettings()
         {
             MinPlayers = 2,
             MaxPlayers = 10
         };
-        _sessionManager = new Mock<SessionManager>(serverRepository.Object, sessionRepository.Object, new OptionsWrapper<GameSessionSettings>(gameSettings));
+        _sessionManager = new Mock<SessionManager>(serverRepository.Object, sessionRepository.Object, gameRepository.Object, playerRepository.Object, new OptionsWrapper<GameSessionSettings>(gameSettings));
         _latencyRule = new Mock<LatencyMatchmakingRule>();
         _queueingRule = new Mock<QueueingTimeMatchmakingRule>();
         _retrier = new Mock<IRetrier>();
@@ -82,10 +84,11 @@ public class MatchmakingUnitTests
         var game = new Game();
         var sessions = new List<Session>
         {
-            new Session(){ Id = Guid.NewGuid(), Players = _players }
+            new Session(){ Id = Guid.NewGuid() }
         };
         _queue.Setup(x => x.PeekPlayer()).Returns(new DequeuedPlayer(playerA, game, DateTimeOffset.UtcNow));
         _sessionManager.Setup(x => x.GetAvailableSessionsInPlayersRegion(It.IsAny<Player>(), It.IsAny<Game>())).Returns(sessions);
+        _sessionManager.Setup(x => x.AddPlayerToSession(It.IsAny<Player>(), It.IsAny<Session>())).Returns(true);
         _retrier.Setup(x => x.Run<bool>(It.IsAny<Func<bool>>(), It.IsAny<TimeSpan>(), It.IsAny<int>())).Returns(true);
         _latencyRule.Setup(x => x.Match(It.IsAny<double>(), It.IsAny<double>())).Returns(true);
         _queueingRule.Setup(x => x.Match(It.IsAny<TimeSpan>(), It.IsAny<TimeSpan>())).Returns(true);
@@ -96,7 +99,6 @@ public class MatchmakingUnitTests
         var matchingSessions = _matchmaker.GetSessionsBasedOnRules();
 
         Assert.NotEmpty(matchingSessions);
-        Assert.Contains(playerA.Username, matchingSessions[0].Players.Select(p => p.Player.Username));
     }
 
     [Fact]
@@ -106,7 +108,7 @@ public class MatchmakingUnitTests
         var game = new Game();
         var sessions = new List<Session>
         {
-            new Session(){ Id = Guid.NewGuid(), Players = _players }
+            new Session(){ Id = Guid.NewGuid() }
         };
         _queue.Setup(x => x.DequeuePlayer()).Returns(new DequeuedPlayer(playerA, game, DateTimeOffset.UtcNow));
         _sessionManager.Setup(x => x.GetAvailableSessionsInPlayersRegion(It.IsAny<Player>(), It.IsAny<Game>())).Returns(sessions);

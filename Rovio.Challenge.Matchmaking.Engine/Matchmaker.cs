@@ -69,6 +69,15 @@ public class Matchmaker<T> where T : Game
     {
         var (player, sessions) = DequePlayerAndFindSessionsAvailable();
         var avgLatency = sessions.Any() ? sessions.Average(s => s.Players.Any() ? s.Players.Average(p => p.Latency) : 0) : 0;
+        var avgQueueingTimeInSecs = Queue.Queue.Any() ?
+            Queue.Queue.Average(p => p.ToDequeuedPlayer().QueueingTime.TotalSeconds) : 0;
+
+        // If player is already in the session, dequeued and look for next player in queue
+        if (sessions.Any(s => s.Players.Any(p => p.Username == player.Player.Username)))
+        {
+            Queue.DequeuePlayer();
+            return GetSessionsBasedOnRules();
+        }
 
         var matchedSessions = new List<ReadySession>();
         foreach(var session in sessions)
@@ -76,42 +85,30 @@ public class Matchmaker<T> where T : Game
             // TO-DO: with each try should increment target property, in this case if latency
             // does not have a match, it should be able to increase the value to allow matching
             // to be flexible with each retry.
-            var matches =_retrier.Run<bool>(
+            var matchLatency =_retrier.Run<bool>(
                 () => _latencyRule.Match(player.Player.Latency, avgLatency),
                 TimeSpan.FromMilliseconds(1000)
             );
-
-            if (matches && _sessionsManager.IsSessionReady(session))
-            {
-                var readySession = new ReadySession();
-                readySession.Session = session;
-                readySession.Players.Add(player.ToDequeuedPlayer());
-                matchedSessions.Add(readySession);
-            }
-        }
-
-        var avgQueueingTimeInSecs = matchedSessions.Any() ?
-            matchedSessions.Average(s => s.Players.Any() ? s.Players.Average(p => p.QueueingTime.TotalSeconds) : 0) : 0;
-        foreach(var session in matchedSessions.ToList())
-        {
-            // TO-DO: with each try should increment target property, in this case if queueing time
-            // does not have a match, it should be able to increase the value to allow matching
-            // to be flexible with each retry.
-            var matches = _retrier.Run<bool>(
+            var matchQueueing = _retrier.Run<bool>(
                 () => _queueingTimeRule.Match(player.QueueingTime, TimeSpan.FromSeconds(avgQueueingTimeInSecs)),
                 TimeSpan.FromMilliseconds(1000)
             );
 
-            // if session does not match or happen to become unready, remove it
-            if (!(matches && _sessionsManager.IsSessionReady(session.Session)))
+            // If matching was success, then dequeue the player and add to session.
+            if (matchLatency && matchQueueing)
             {
-                matchedSessions.Remove(session);
+                _sessionsManager.AddPlayerToSession(player.Player, session);
+                Queue.DequeuePlayer();
+            } 
+
+            if(_sessionsManager.IsSessionReady(session))
+            {
+                var readySession = new ReadySession();
+                readySession.Session = session;
+                readySession.Players.AddRange(session.Players);
+                matchedSessions.Add(readySession);
             }
         }
-
-        // If matching was success, then dequeue the player.
-        if(matchedSessions.Any())
-            Queue.DequeuePlayer();
 
         return matchedSessions;
     }

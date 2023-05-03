@@ -41,13 +41,11 @@ public class AngryBirdsMatchmaker : Matchmaker<AngryBirds>, IAngryBirdsMatchmake
     public Session StartMatchmakingProcess()
     {
         var sessions = base.GetSessionsBasedOnRules();
-        if (!sessions.Any())
-            throw new SessionNotFoundException();
 
         // returns the first session available, if this concrete matchmaker
         // needs to it can apply more rules on top if this result to better
         // suit the game specific matchmaking rules.
-        return sessions.Select(s => s.Session).FirstOrDefault();
+        return sessions?.Select(s => s.Session)?.FirstOrDefault();
     }
 }
 

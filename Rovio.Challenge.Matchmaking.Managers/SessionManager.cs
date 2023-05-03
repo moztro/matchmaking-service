@@ -10,16 +10,22 @@ public class SessionManager : ISessionManager
 {
     private readonly BaseRepository<Server> _serverRepository;
     private readonly BaseRepository<Session> _sessionRepository;
+    private readonly BaseRepository<Game> _gameRepository;
+    private readonly BaseRepository<Player> _playerRepository;
     private readonly GameSessionSettings _gameSettings;
 
     public SessionManager(
         BaseRepository<Server> serverRepository,
         BaseRepository<Session> sessionRepository,
+        BaseRepository<Game> gameRepository,
+        BaseRepository<Player> playerRepository,
         IOptions<GameSessionSettings> gameSettings
     )
     {
         _serverRepository = serverRepository;
         _sessionRepository = sessionRepository;
+        _gameRepository = gameRepository;
+        _playerRepository = playerRepository;
         _gameSettings = gameSettings.Value;
     }
 
@@ -43,15 +49,20 @@ public class SessionManager : ISessionManager
     {
         var server = GetGameServer(player);
 
-        var sessions = _sessionRepository.Get(s => s.Game.Name == game.Name).ToList();
+        var sessions = _sessionRepository.Get(s => s.Game.Name == game.Name && s.Server.Region == server.Region).ToList();
+
+        var p = _playerRepository.GetByID(player.Username);
+        if (p == null)
+            _playerRepository.Insert(player);
+
         // If there is no session for the player, creates one
-        if(!sessions.Any())
+        if (!sessions.Any())
         {
             var newSession = new Session()
             {
-                Game = game,
+                Game = _gameRepository.GetByID(game.Name),
                 Server = server,
-                Players = new List<Player> { player }
+                Players = new List<Player> { p ?? player }
             };
             _sessionRepository.Insert(newSession);
             sessions.Add(newSession);
@@ -64,6 +75,17 @@ public class SessionManager : ISessionManager
         return session.Players.Any() &&
             session.Players.Count() >= _gameSettings.MinPlayers &&
             session.Players.Count() <= _gameSettings.MaxPlayers;
+    }
+
+    public virtual bool AddPlayerToSession(Player player, Session session)
+    {
+        var sessionToUpdate = _sessionRepository.GetByID(session.Id);
+        var playerToAdd = _playerRepository.GetByID(player.Username);
+
+        sessionToUpdate.Players.Add(playerToAdd);
+        _sessionRepository.Update(sessionToUpdate);
+
+        return true;
     }
 }
 

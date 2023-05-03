@@ -14,6 +14,8 @@ public class SessionManagerUnitTests
 {
     private readonly Mock<BaseRepository<Server>> _serverRepository;
     private readonly Mock<BaseRepository<Session>> _sessionRepository;
+    private readonly Mock<BaseRepository<Game>> _gameRepository;
+    private readonly Mock<BaseRepository<Player>> _playerRepository;
     private readonly GameSessionSettings _gameSettings;
     private ISessionManager _sessionManager;
     
@@ -22,13 +24,15 @@ public class SessionManagerUnitTests
         var db = new SqlLiteContext();
         _serverRepository = new Mock<BaseRepository<Server>>(db);
         _sessionRepository = new Mock<BaseRepository<Session>>(db);
+        _gameRepository = new Mock<BaseRepository<Game>>(db);
+        _playerRepository = new Mock<BaseRepository<Player>>(db);
         _gameSettings = new GameSessionSettings()
         {
             MinPlayers = 2,
             MaxPlayers = 10
         };
 
-        _sessionManager = new SessionManager(_serverRepository.Object, _sessionRepository.Object, new OptionsWrapper<GameSessionSettings>(_gameSettings));
+        _sessionManager = new SessionManager(_serverRepository.Object, _sessionRepository.Object, _gameRepository.Object, _playerRepository.Object, new OptionsWrapper<GameSessionSettings>(_gameSettings));
     }
 
     [Fact]

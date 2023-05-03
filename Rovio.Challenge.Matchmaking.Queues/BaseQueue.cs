@@ -10,7 +10,7 @@ namespace Rovio.Challenge.Matchmaking.Queues;
 /// </summary>
 public class BaseQueue<T> where T : Game
 {
-    protected ConcurrentQueue<QueuedPlayer> Queue { get; set; } = new ConcurrentQueue<QueuedPlayer>();
+    public ConcurrentQueue<QueuedPlayer> Queue { get; set; } = new ConcurrentQueue<QueuedPlayer>();
 
     /// <summary>
     /// Add a player to the queue to wait for a game.

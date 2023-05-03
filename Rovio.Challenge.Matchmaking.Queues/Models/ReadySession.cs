@@ -15,5 +15,5 @@ public class ReadySession
     /// </summary>
     /// <typeparam name="DequeuedPlayer"></typeparam>
     /// <returns></returns>
-    public List<DequeuedPlayer> Players { get; set; } = new List<DequeuedPlayer>();
+    public List<Player> Players { get; set; } = new List<Player>();
 }

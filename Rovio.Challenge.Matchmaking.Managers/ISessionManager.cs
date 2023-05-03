@@ -16,5 +16,11 @@ public interface ISessionManager
     /// <param name="session"></param>
     /// <returns></returns>
     bool IsSessionReady(Session session);
+
+    /// <summary>
+    /// Add a player to a session.
+    /// </summary>
+    /// <param name="player"></param>
+    bool AddPlayerToSession(Player player, Session session);
 }
 
